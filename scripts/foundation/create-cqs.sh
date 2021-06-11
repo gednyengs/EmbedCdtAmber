@@ -48,7 +48,7 @@ mkdir -p ${dest_path}
 
 
 cd ${dest_path}
-mkdir -p main semver template-core template-stm template-ad template-freescale template-cortexm
+mkdir -p main semver template-core template-stm template-aha template-ad template-freescale template-cortexm
 
 echo
 echo "Copy the entire Git repo..."
@@ -77,6 +77,10 @@ echo "Move the stm folders..."
 mv -v "main/plugins/org.eclipse.embedcdt.templates.stm/templates/micro-os-plus"/* template-stm
 
 echo
+echo "Move the aha folders..."
+mv -v "main/plugins/org.eclipse.embedcdt.templates.aha/templates/micro-os-plus"/* template-aha
+
+echo
 echo "Move the cortexm folders..."
 mv -v "main/plugins/org.eclipse.embedcdt.templates.cortexm/templates/cortexm_project/Vendor" template-core/cortexm
 
@@ -93,6 +97,9 @@ mv -v "main/plugins/org.eclipse.embedcdt.templates.sifive/templates/"* template-
 
 mkdir -p template-core/stm
 mv -v "main/plugins/org.eclipse.embedcdt.templates.stm/templates"/* template-core/stm
+
+mkdir -p template-core/aha
+mv -v "main/plugins/org.eclipse.embedcdt.templates.aha/templates"/* template-core/aha
 
 mkdir -p template-core/ad
 mv -v "main/plugins/org.eclipse.embedcdt.templates.ad/templates"/* template-core/ad
@@ -124,11 +131,12 @@ echo
 zip -r "template-stm-${version}.zip" "template-stm"
 echo "template-stm-${version}.zip done"
 
+zip -r "template-aha-${version}.zip" "template-aha"
+echo "template-aha-${version}.zip done"
+
 echo
 pwd
 ls -lL "$(pwd)"
 
 echo
 echo "Done"
-
-

@@ -44,6 +44,8 @@
 			<unit id="org.eclipse.embedcdt.templates.sifive.source.feature.group" version="6.0.0.202012080907"/>
 			<unit id="org.eclipse.embedcdt.templates.stm.feature.group" version="6.0.0.202012080907"/>
 			<unit id="org.eclipse.embedcdt.templates.stm.source.feature.group" version="6.0.0.202012080907"/>
+			<unit id="org.eclipse.embedcdt.templates.aha.feature.group" version="6.0.0.202012080907"/>
+			<unit id="org.eclipse.embedcdt.templates.aha.source.feature.group" version="6.0.0.202012080907"/>
 		</location>
 	</locations>
 </target>

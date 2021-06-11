@@ -39,3 +39,4 @@ org.eclipse.embedcdt.templates.freescale.ui/debug=true
 org.eclipse.embedcdt.templates.freescale.pe.ui/debug=true
 org.eclipse.embedcdt.templates.sifive.ui/debug=true
 org.eclipse.embedcdt.templates.stm.ui/debug=true
+org.eclipse.embedcdt.templates.aha.ui/debug=true
