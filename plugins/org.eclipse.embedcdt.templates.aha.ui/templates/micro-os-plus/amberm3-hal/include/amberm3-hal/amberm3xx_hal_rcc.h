@@ -1847,7 +1847,7 @@ typedef struct
   */
 
 /* Include RCC HAL Extended module */
-#include "stm32f2xx_hal_rcc_ex.h"
+#include "amberm3xx_hal_rcc_ex.h"
 /* Exported functions --------------------------------------------------------*/
  /** @addtogroup RCC_Exported_Functions
   * @{

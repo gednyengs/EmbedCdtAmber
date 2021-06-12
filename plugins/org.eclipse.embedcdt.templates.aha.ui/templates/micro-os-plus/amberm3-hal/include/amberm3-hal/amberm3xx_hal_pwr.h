@@ -268,7 +268,7 @@ typedef struct
   */
 
 /* Include PWR HAL Extension module */
-#include "stm32f2xx_hal_pwr_ex.h"
+#include "amberm3xx_hal_pwr_ex.h"
 
 /* Exported functions --------------------------------------------------------*/
 /** @addtogroup PWR_Exported_Functions PWR Exported Functions

@@ -543,7 +543,7 @@ typedef  void (*pADC_CallbackTypeDef)(ADC_HandleTypeDef *hadc); /*!< pointer to 
   */
 
 /* Include ADC HAL Extension module */
-#include "stm32f2xx_hal_adc_ex.h"
+#include "amberm3xx_hal_adc_ex.h"
 
 /* Exported functions --------------------------------------------------------*/
 /** @addtogroup ADC_Exported_Functions

@@ -134,7 +134,7 @@ typedef struct
   */
 
 /* Include PCD HAL Extended module */
-#include "stm32f2xx_hal_pcd_ex.h"
+#include "amberm3xx_hal_pcd_ex.h"
 
 /* Exported constants --------------------------------------------------------*/
 /** @defgroup PCD_Exported_Constants PCD Exported Constants

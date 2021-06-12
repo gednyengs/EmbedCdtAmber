@@ -83,7 +83,6 @@
 
 #if defined(AMBERM301xx)
   #include "amberm301xx.h"
- #error "Please select first the target AMBERM3xx device used in your application (in amberm3xx.h file)"
 #endif
 
 /**

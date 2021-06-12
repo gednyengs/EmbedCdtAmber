@@ -609,7 +609,7 @@ typedef  void (*pRTC_CallbackTypeDef)(RTC_HandleTypeDef *hrtc);  /*!< pointer to
   */
 
 /* Include RTC HAL Extension module */
-#include "stm32f2xx_hal_rtc_ex.h"
+#include "amberm3xx_hal_rtc_ex.h"
 
 /* Exported functions --------------------------------------------------------*/
 /** @addtogroup RTC_Exported_Functions

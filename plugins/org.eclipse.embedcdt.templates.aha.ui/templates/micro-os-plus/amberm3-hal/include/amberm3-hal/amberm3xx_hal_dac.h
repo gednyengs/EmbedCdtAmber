@@ -360,7 +360,7 @@ typedef void (*pDAC_CallbackTypeDef)(DAC_HandleTypeDef *hdac);
   */
 
 /* Include DAC HAL Extended module */
-#include "stm32f2xx_hal_dac_ex.h"
+#include "amberm3xx_hal_dac_ex.h"
 
 /* Exported functions --------------------------------------------------------*/
 
