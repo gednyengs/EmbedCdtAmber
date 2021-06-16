@@ -5,10 +5,27 @@
  extern "C" {
 #endif /* __cplusplus */
 
+/**************************** Includes ****************************************/
+#include <stdint.h>
+
 /**************************** Defines *****************************************/
 #if !defined (AMBER)
 #define AMBER
 #endif /* AMBER */
+
+/**************************** Constant Definitions ****************************/
+
+#ifndef TRUE
+  #define TRUE    1U
+#endif
+
+#ifndef FALSE
+  #define FALSE   0U
+#endif
+
+#ifndef NULL
+  #define NULL    0U
+#endif
 
 /**************************** Type Definitions ********************************/
 typedef enum
@@ -16,6 +33,15 @@ typedef enum
   SUCCESS = 0U,
   ERROR = 1U
 } ErrorStatus_e;
+
+typedef uint8_t         u8;
+typedef uint16_t        u16;
+typedef uint32_t        u32;
+typedef uint64_t        u64;
+
+typedef int8_t          s8;
+typedef int16_t         s16;
+typedef int32_t         s32;
 
 /**************************** Includes ****************************************/
 
@@ -26,6 +52,8 @@ typedef enum
 #if defined (USE_HAL_DRIVER)
  #include "amberm3vx_hal.h"
 #endif
+
+#include "amber_assert.h"
 
 /**************************** Macro Definitions *******************************/
 

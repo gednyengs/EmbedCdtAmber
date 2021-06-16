@@ -15,7 +15,6 @@
 
 /************************* Includes *******************************************/
 #include "amberm3vx.h"
-#include <stdint.h>
 
 /************************* Constant Definitions *******************************/
 #define HAL_MAX_DELAY   0xFFFFFFFFU
@@ -35,14 +34,27 @@ typedef enum
   HAL_LOCKED            = 0x01
 } HAL_LockStatus_e;
 
-typedef uint8_t         u8;
-typedef uint16_t        u16;
-typedef uint32_t        u32;
-typedef int8_t          s8;
-typedef int16_t         s16;
-typedef int32_t         s32;
+typedef struct
+{
+  u32 Upper;
+  u32 Lower;
+} HAL_uint64_t;
 
 /************************* Macro Definitions **********************************/
+
+/**
+ * Return the most significant word of the 64-bit double-word data type
+ * @param   x is 64-bit double-word
+ * @return  Upper word (32 bits) of the double-word
+ */
+#define HAL_UINT64_MSW(x) ((x).Upper)
+
+/**
+ * Return the least significant word of the 64-bit double-word data type
+ * @param   x is 64-bit double-word
+ * @return  Lower word (32 bits) of the double-word
+ */
+#define HAL_UINT64_LSW(x) ((x).Lower)
 
 /* Use to suppress warning on unused variable */
 #define HAL_UNUSED(X)                   (void)X
