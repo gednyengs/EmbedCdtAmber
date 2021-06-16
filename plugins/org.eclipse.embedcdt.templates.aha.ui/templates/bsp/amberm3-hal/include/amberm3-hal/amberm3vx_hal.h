@@ -7,5 +7,6 @@
 #include "amberm3vx_hal_timer.h"
 #include "amberm3vx_hal_uart.h"
 #include "amberm3vx_hal_utils.h"
+#include "amberm3vx_hal_dma.h"
 
 #endif /* AMBERM3VX_HAL_H */
