@@ -18,9 +18,9 @@
 		type="PAGES-ONLY"
 		help="help.html">
 		<property
-			id="AMBERM3chipFamilyCube"
-			label="%AMBERM3Vx.chipFamily.label"
-			description="%AMBERM3Vx.chipFamily.description"
+			id="AMBERM3Device"
+			label="%AMBERM3Vx.device.label"
+			description="%AMBERM3Vx.device.description"
 			type="select"
 			default="AMBERM3V1"
 			hidden="false"
@@ -299,7 +299,7 @@
 
 		<property
 			id="device"
-			label="Device folder/file name; will be set to lowercase $(AMBERM3chipFamilyCube)"
+			label="Device folder/file name; will be set to lowercase $(AMBERM3Device)"
 			mandatory="true"
 			hidden="true"
 			default="undefined"
@@ -387,7 +387,7 @@
 				value="cmsisFamilySymbol" />
 			<simple
 				name="propertyValue"
-				value="$(AMBERM3chipFamilyCube)" />
+				value="$(AMBERM3Device)" />
 		</process>
 
 		<process type="org.eclipse.embedcdt.templates.core.ConditionalSetLowerCaseProperty">
@@ -402,7 +402,7 @@
 				value="device" />
 			<simple
 				name="propertyValue"
-				value="$(AMBERM3chipFamilyCube)" />
+				value="$(AMBERM3Device)" />
 		</process>
 
 		<process type="org.eclipse.embedcdt.templates.core.ConditionalSetProperty">
@@ -980,6 +980,28 @@
 					<simple
 						name="pattern"
 						value="" />
+					<simple
+						name="replaceable"
+						value="true" />
+				</element>
+			</complex-array>
+		</process>
+		<!-- Copy $(CMSIS_name)_hal_msp_template.c to src -->
+		<process type="org.eclipse.embedcdt.templates.core.ConditionalAddFiles">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<simple
+				name="condition"
+				value="" />
+			<complex-array name="files">
+				<element>
+					<simple
+						name="source"
+						value="$(osDir)/$(devicePeriph)/src/$(devicePeriph)/$(CMSIS_name)_hal_msp_template.c" />
+					<simple
+						name="target"
+						value="$(sourceDir)/$(CMSIS_name)_hal_msp.c" />
 					<simple
 						name="replaceable"
 						value="true" />

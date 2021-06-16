@@ -25,6 +25,10 @@
  *   __StackTop
  *   __stack
  */
+
+__STACK_SIZE = 1024;
+__HEAP_SIZE = 2048;
+
 ENTRY(_start)
 
 SECTIONS

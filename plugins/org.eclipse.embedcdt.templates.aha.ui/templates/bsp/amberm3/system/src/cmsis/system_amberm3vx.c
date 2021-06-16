@@ -21,6 +21,7 @@
 * limitations under the License.
 */
 
+#include <stdint.h>
 #include "cmsis_device.h"
 
 /*----------------------------------------------------------------------------
@@ -45,7 +46,7 @@ uint32_t SystemCoreClock = (HSE_VALUE >> 1);  /* System Core Clock Frequency */
 *----------------------------------------------------------------------------*/
 void SystemCoreClockUpdate (void)
 {
-  uin32_t SysClkDiv = Device_PTFMCTRL->SYS_CLK_SELECT;
+  uint32_t SysClkDiv = Device_PTFMCTRL->SYS_CLK_SELECT;
   SystemCoreClock = HSE_VALUE  >> SysClkDiv;
 }
 

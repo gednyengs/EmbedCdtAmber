@@ -143,7 +143,7 @@ void __attribute__ ((section(".after_vectors"),noreturn,weak))
 _start (void)
 {
   // Copy the DATA segment from Flash to RAM (inlined).
-  __initialize_data(&__etext, &__data_start__, &_edata);
+  __initialize_data(&__etext, &__data_start__, &__data_end__);
 
   // Zero fill the BSS section (inlined).
   __initialize_bss(&__bss_start__, &__bss_end__);
