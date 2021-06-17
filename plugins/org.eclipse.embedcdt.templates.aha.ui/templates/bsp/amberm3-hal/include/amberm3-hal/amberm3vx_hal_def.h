@@ -62,6 +62,19 @@ typedef struct
 #define HAL_IS_BIT_SET(REG, BIT)        (((REG) & (BIT)) == (BIT))
 #define HAL_IS_BIT_CLR(REG, BIT)        ((REG) & (BIT)) == 0U)
 
+/************************* Function Defintions ********************************/
+
+static __INLINE u32 HAL_In32(void *Addr)
+{
+  return *(volatile u32 *) Addr;
+}
+
+static __INLINE void HAL_Out32(void *Addr, u32 Data)
+{
+  volatile u32 *IOAddr = (volatile u32 *) Addr;
+  *IOAddr = Data;
+}
+
 #ifdef __cplusplus
 }
 #endif
