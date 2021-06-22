@@ -9,12 +9,17 @@
 #include "amberm3vx.h"
 #include "amberm3vx_hal_def.h"
 
+/************************* Constant Definitions *******************************/
+
+#define HAL_UART_0    0
+#define HAL_UART_1    1
+
 /************************* Type Definitions ***********************************/
 
 /**
  * Signature for UART callback function
  */
-typedef void (*HAL_Uart_CallBack_Fn)(void *CallBackRef);
+typedef void (*HAL_Uart_CallBackFn)(void *CallBackRef);
 
 /**
  * UART Statistics
@@ -28,14 +33,29 @@ typedef struct {
 } HAL_Uart_Stats_t;
 
 /**
+ * Rx/Tx Buffer
+ */
+typedef struct {
+  u8 *BufPtr;
+  u32 NumReqBytes;
+  u32 NumRemBytes;
+} HAL_Uart_Buffer_t;
+
+/**
  * HAL UART Driver Instance Data
  */
 typedef struct {
   Uart_RegDef_t *RegDefPtr;         /**< Pointer to register description      */
   HAL_Uart_Stats_t Stats;           /**< UART Statistics                      */
-  u32 IsReady;                      /**< Device is ready                      */
-  HAL_Uart_CallBack_Fn CallBack;    /**< Timer callback function              */
-  void *CallBackRef;                /**< Callback reference cookie            */
+  volatile u32 IsReady;             /**< Device is ready                      */
+
+  HAL_Uart_Buffer_t RxBuf;
+  HAL_Uart_Buffer_t TxBuf;
+
+  HAL_Uart_CallBackFn RxCallBack;   /**< Rx callback function                 */
+  void *RxCallBackRef;              /**< Rx Callback reference cookie         */
+  HAL_Uart_CallBackFn TxCallBack;   /**< Rx callback function                 */
+  void *TxCallBackRef;              /**< Rx Callback reference cookie         */
 } HAL_Uart_t;
 
 /************************* Function Prototypes ********************************/
@@ -52,113 +72,84 @@ typedef struct {
 extern HAL_Status_e HAL_Uart_Initialize(HAL_Uart_t * UartPtr, u8 UartID);
 
 /**
- * Configure UART Device
+ * Set Baudrate
  * @param UartPtr Pointer to UART driver struct
- * @param BaudDiv
- * @param TxEn
- * @param RxEn
- * @param TxIrqEn
- * @param RxIrqEn
- * @param TxOverIrqEn
- * @param RxOverIrqEn
+ * @param BaudDiv Baudrate divider
  *
  * @return HAL_OK on success, otherise HAL_ERROR
  */
-extern HAL_Status_e HAL_Uart_Configure(HAL_Uart_t *UartPtr, u32 BaudDiv, u32 TxEn,
-                                    u32 RxEn,
-                                    u32 TxIrqEn,
-                                    u32 RxIrqEn,
-                                    u32 TxOverIrqEn,
-                                    u32 RxOverIrqEn);
+extern HAL_Status_e HAL_Uart_SetBaudRate(HAL_Uart_t *UartPtr, u32 BaudDiv);
 
 /**
- * Returns whether UART RX Buffer is Full
- * @param UartPtr Pointer to UART driver struct
+ * Send data through UART
+ * @param UartPtr Pointer to initialized HAL_Uart_t struct
+ * @param BufPtr  Buffer containing data to send
+ * @param Len   Length of data to send
  *
- * @return 1 = FULL, 0 = NOT FULL
+ * @return HAL_OK on success, otherwise HAL_ERROR or HAL_BUSY
  */
-extern u32 HAL_Uart_GetRxBufferFull(HAL_Uart_t *UartPtr);
+extern HAL_Status_e HAL_Uart_Send(HAL_Uart_t *UartPtr, u8 *BufPtr, u32 Len);
 
 /**
- * Returns whether UART TX Buffer is Full
- * @param UartPtr Pointer to UART driver struct
+ * Receive data through UART
+ * @param UartPtr Pointer to initialized HAL_Uart_t struct
+ * @param BufPtr  Buffer to contain data received
+ * @param Len   Length of data to receive
  *
- * @return 1 = FULL, 0 = NOT FULL
+ * @return HAL_OK on success, otherwise HAL_ERROR or HAL_BUSY
  */
-extern u32 HAL_Uart_GetTxBufferFull(HAL_Uart_t *UartPtr);
+extern HAL_Status_e HAL_Uart_Recv(HAL_Uart_t *UartPtr, u8 *BufPtr, u32 Len);
 
 /**
- * Sends a Character to UART TX Buffer
- * @param UartPtr Pointer to UART driver struct
- * @param Ch  Character to send
+ * Enable UART Interrupts
+ * @param UartPtr Pointer to initialized HAL_Uart_t struct
  *
- * @return HAL_OK on success, HAL_ERROR otherwise
+ * @return HAL_OK on success, otherwise HAL_ERROR
  */
-extern HAL_Status_e HAL_Uart_SendChar(HAL_Uart_t *UartPtr, char Ch);
+extern HAL_Status_e HAL_Uart_EnableInterrupt(HAL_Uart_t *UartPtr);
 
 /**
- * Receives a Character to UART RX Buffer
- * @param UartPtr Pointer to UART driver struct
+ * Disable UART Interrupts
+ * @param UartPtr Pointer to initialized HAL_Uart_t struct
  *
- * @return Received character
+ * @return HAL_OK on success, otherwise HAL_ERROR
  */
-extern char HAL_Uart_ReceiveChar(HAL_Uart_t *UartPtr);
+extern HAL_Status_e HAL_Uart_DisableInterrupt(HAL_Uart_t * UartPtr);
 
 /**
- * Returns UART Overrun Status
- * @param UartPtr Pointer to UART driver struct
+ * Set Receive Callback
  *
- * @return Overrun status
+ * This is called when the driver has finished receiving the requested data
+ *
+ * @param UartPtr Pointer to initialized HAL_Uart_t struct
+ * @param FuncPtr The callback function (called in interrupt context)
+ *
+ * @return HAL_OK on success, otherwise HAL_ERROR
  */
-extern u32 HAL_Uart_GetOverrunStatus(HAL_Uart_t *UartPtr);
+extern HAL_Status_e HAL_Uart_SetRxCallback(HAL_Uart_t *UartPtr,
+                                           HAL_Uart_CallBackFn FuncPtr);
 
 /**
- * Clears UART Overrun Status
- * @param UartPtr Pointer to UART driver struct
+ * Set Transmit Callback
  *
- * @return HAL_OK on success, HAL_ERROR otherwise
+ * This is called when the driver has finished sending the requested data
+ *
+ * @param UartPtr Pointer to initialized HAL_Uart_t struct
+ * @param FuncPtr The callback function (called in interrupt context)
+ *
+ * @return HAL_OK on success, otherwise HAL_ERROR
  */
-extern HAL_Status_e HAL_Uart_ClearOverrunStatus(HAL_Uart_t *UartPtr);
+extern HAL_Status_e HAL_Uart_SetTxCallback(HAL_Uart_t *UartPtr,
+                                           HAL_Uart_CallBackFn FuncPtr);
 
 /**
- * Returns UART Baud Rate Divider Value
- * @param UartPtr Pointer to UART driver struct
+ * Clear UART Stats
  *
- * @return Baud rate divider value
- */
-extern u32 HAL_Uart_GetBaudDivider(HAL_Uart_t *UartPtr);
-
-/**
- * Returns UART TX Interrupt Status
- * @param UartPtr Pointer to UART driver struct
+ * @param UartPtr Pointer to initialized HAL_Uart_t struct
  *
- * @return TX Interrupt Status
+ * @return HAL_OK on success, otherwise HAL_ERROR
  */
-extern u32 HAL_Uart_GetTxIRQStatus(HAL_Uart_t *UartPtr);
-
-/**
- * Returns UART RX Interrupt Status
- * @param UartPtr Pointer to UART driver struct
- *
- * @return RX Interrupt Status
- */
-extern u32 HAL_Uart_GetRxIRQStatus(HAL_Uart_t *UartPtr);
-
-/**
- * Clears UART TX IRQ
- * @param UartPtr Pointer to UART driver struct
- *
- * @return HAL_OK on success, HAL_ERROR otherwise
- */
-extern HAL_Status_e HAL_Uart_ClearTxIRQ(HAL_Uart_t *UartPtr);
-
-/**
- * Clears UART RX IRQ
- * @param UartPtr Pointer to UART driver struct
- *
- * @return HAL_OK on success, HAL_ERROR otherwise
- */
-extern HAL_Status_e HAL_Uart_ClearRxIRQ(HAL_Uart_t *UartPtr);
+extern HAL_Status_e HAL_Uart_ClearStats(HAL_Uart_t *UartPtr);
 
 #ifdef __cplusplus
 }

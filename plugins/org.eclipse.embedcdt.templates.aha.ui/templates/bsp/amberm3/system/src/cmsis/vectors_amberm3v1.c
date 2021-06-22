@@ -42,11 +42,7 @@ TIMER0_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
 TIMER1_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
-UART0_IRQHandler(void);
-void __attribute__ ((weak, alias ("Default_Handler")))
-UART1_IRQHandler(void);
-void __attribute__ ((weak, alias ("Default_Handler")))
-UARTOVF_IRQHandler(void);
+UART_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
 DMA0_0_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
@@ -110,9 +106,9 @@ IRQHandler __isr_vectors[] =
     // External Interrupts
     TIMER0_IRQHandler,                  // TIMER0 Interrupt Handler
     TIMER1_IRQHandler,                  // TIMER1 Interrupt Handler
-    UART0_IRQHandler,                   // UART0 Interrupt Handler
-    UART1_IRQHandler,                   // UART1 Interrupt Handler
-    UARTOVF_IRQHandler,                 // UART0/1 Overflow Interrupt Handler
+    UART_IRQHandler,                    // UART0 Interrupt Handler
+    UART_IRQHandler,                    // UART1 Interrupt Handler
+    UART_IRQHandler,                    // UART0/1 Overflow Interrupt Handler
     DMA0_0_IRQHandler,                  // DMA0 Interrupt Handler 0
     DMA0_1_IRQHandler,                  // DMA0 Interrupt Handler 1
     DMA1_0_IRQHandler,                  // DMA1 Interrupt Handler 0
