@@ -124,7 +124,7 @@ HAL_Status_e HAL_Uart_Recv(HAL_Uart_t *UartPtr, u8 *BufPtr, u32 Len)
   /* Enable RX */
   UartPtr->RegDefPtr->CTRL |= UART_CTRL_RXEN_Msk;
 
-  UartMode = !!(UartPtr->RegDefPtr->CTRL & UART_CTRL_TXIRQEN_Msk);
+  UartMode = !!(UartPtr->RegDefPtr->CTRL & UART_CTRL_RXIRQEN_Msk);
 
   UartPtr->IsReady = 0;
 
