@@ -3,7 +3,7 @@
 
 /************************* Variable Declarations ******************************/
 
-static HAL_Uart_t *UartInstances = {NULL, NULL};
+static HAL_Uart_t *UartInstances[2] = {NULL, NULL};
 
 /************************* Function Definitions *******************************/
 
@@ -30,11 +30,11 @@ HAL_Status_e HAL_Uart_Initialize(HAL_Uart_t * UartPtr, u8 UartID)
 
   UartPtr->RxBuf.BufPtr = NULL;
   UartPtr->RxBuf.NumRemBytes = 0;
-  UartPtr->RxBuf.NumReqByte = 0;
+  UartPtr->RxBuf.NumReqBytes = 0;
 
   UartPtr->TxBuf.BufPtr = NULL;
   UartPtr->TxBuf.NumRemBytes = 0;
-  UartPtr->TxBuf.NumReqByte = 0;
+  UartPtr->TxBuf.NumReqBytes = 0;
 
   UartPtr->RxCallBack = NULL;
   UartPtr->RxCallBackRef = NULL;
@@ -125,7 +125,7 @@ HAL_Status_e HAL_Uart_Recv(HAL_Uart_t *UartPtr, u8 *BufPtr, u32 Len)
 
     while (BufPtr < (BufPtr + Len)) {
       while(!(UartPtr->RegDefPtr->STATE & UART_STATE_RXBF_Msk));
-      *bufPtr++ = (u8) UartPtr->RegDefPtr->DATA;
+      *BufPtr++ = (u8) UartPtr->RegDefPtr->DATA;
       UartPtr->Stats.CharReceived++;
     }
 
