@@ -63,6 +63,8 @@ HAL_Status_e HAL_Uart_SetBaudRate(HAL_Uart_t *UartPtr, u32 BaudDiv)
   /* Set configuration back */
   UartPtr->RegDefPtr->CTRL = UartCtrl;
 
+  return HAL_OK;
+
 }
 
 HAL_Status_e HAL_Uart_Send(HAL_Uart_t *UartPtr, u8 *BufPtr, u32 Len)
@@ -78,6 +80,9 @@ HAL_Status_e HAL_Uart_Send(HAL_Uart_t *UartPtr, u8 *BufPtr, u32 Len)
   if (!UartPtr->IsReady)
     return HAL_BUSY;
 
+  /* Enable TX */
+  UartPtr->RegDefPtr->CTRL |= UART_CTRL_TXEN_Msk;
+
   UartMode = !!(UartPtr->RegDefPtr->CTRL & UART_CTRL_RXIRQEN_Msk);
 
   UartPtr->IsReady = 0;
@@ -86,10 +91,12 @@ HAL_Status_e HAL_Uart_Send(HAL_Uart_t *UartPtr, u8 *BufPtr, u32 Len)
     UartPtr->TxBuf.BufPtr = NULL;
     UartPtr->TxBuf.NumReqBytes = 0;
     UartPtr->TxBuf.NumRemBytes = 0;
+    u8 *bf = BufPtr;
 
-    while (BufPtr < (BufPtr + Len)) {
+    while (bf < (BufPtr + Len)) {
       while(UartPtr->RegDefPtr->STATE & UART_STATE_TXBF_Msk);
-      UartPtr->RegDefPtr->DATA = (u32) *BufPtr++;
+      UartPtr->RegDefPtr->DATA = (u32) *bf;
+      bf++;
       UartPtr->Stats.CharTransmitted++;
     }
 
@@ -114,6 +121,9 @@ HAL_Status_e HAL_Uart_Recv(HAL_Uart_t *UartPtr, u8 *BufPtr, u32 Len)
   if (!UartPtr->IsReady)
     return HAL_BUSY;
 
+  /* Enable RX */
+  UartPtr->RegDefPtr->CTRL |= UART_CTRL_RXEN_Msk;
+
   UartMode = !!(UartPtr->RegDefPtr->CTRL & UART_CTRL_TXIRQEN_Msk);
 
   UartPtr->IsReady = 0;
@@ -122,10 +132,11 @@ HAL_Status_e HAL_Uart_Recv(HAL_Uart_t *UartPtr, u8 *BufPtr, u32 Len)
     UartPtr->RxBuf.BufPtr = NULL;
     UartPtr->RxBuf.NumReqBytes = 0;
     UartPtr->RxBuf.NumRemBytes = 0;
+    u8 *bf = BufPtr;
 
-    while (BufPtr < (BufPtr + Len)) {
+    while (bf < (BufPtr + Len)) {
       while(!(UartPtr->RegDefPtr->STATE & UART_STATE_RXBF_Msk));
-      *BufPtr++ = (u8) UartPtr->RegDefPtr->DATA;
+      *bf++ = (u8) UartPtr->RegDefPtr->DATA;
       UartPtr->Stats.CharReceived++;
     }
 
