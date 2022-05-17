@@ -27,15 +27,14 @@
 
 // ----------------------------------------------------------------------------
 
-#include <stdlib.h>
 #include "diag/trace.h"
+#include <stdlib.h>
 
 // ----------------------------------------------------------------------------
 
 // Forward declaration
 
-void
-_exit(int code);
+void _exit(int code);
 
 // ----------------------------------------------------------------------------
 
@@ -46,24 +45,18 @@ _exit(int code);
 // It can be redefined in the application, if more functionality
 // is required.
 
-void
-__attribute__((weak))
-_exit(int code __attribute__((unused)))
-{
-  // TODO: write on trace
-  while (1)
-    ;
+void __attribute__((weak)) _exit(int code __attribute__((unused))) {
+    trace_printf("Application Exited!\r\n");
+    while (1)
+        ;
 }
 
 // ----------------------------------------------------------------------------
 
-void
-__attribute__((weak,noreturn))
-abort(void)
-{
-  trace_puts("abort(), exiting...");
+void __attribute__((weak, noreturn)) abort(void) {
+    trace_puts("abort(), exiting...");
 
-  _exit(1);
+    _exit(1);
 }
 
 // ----------------------------------------------------------------------------
